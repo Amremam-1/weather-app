@@ -31,7 +31,7 @@ export default function Home() {
   //   }
   // );
 
-  const { isLoading, error, data, refetch } = useQuery<WeatherData>(
+  const { isLoading, data, refetch } = useQuery<WeatherData>(
     "repoData",
     async () => {
       const { data } = await axios.get(
