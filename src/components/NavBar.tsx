@@ -36,7 +36,7 @@ export default function NavBar({ location }: Props) {
     if (value.length >= 3) {
       try {
         const response = await axios.get<WeatherApiResponse>(
-          `${API_BASE_URL}/find?q=${value}&appid=${API_KEY}`
+          `https://api.openweathermap.org/data/2.5/find?q=${value}&appid=${API_KEY}`
         )
 
         const suggestions = response.data.list.map((item) => item.name)

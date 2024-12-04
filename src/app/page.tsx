@@ -1,27 +1,27 @@
 /** @format */
-"use client";
+"use client"
 
-import Container from "@/components/Container";
-import ForecastWeatherDetail from "@/components/ForecastWeatherDetail";
-import NavBar from "@/components/NavBar";
-import WeatherDetails from "@/components/WeatherDetails";
-import WeatherIcon from "@/components/WeatherIcon";
-import { convertKelvinToCelsius } from "@/utils/convertKelvinToCelsius";
-import { convertWindSpeed } from "@/utils/convertWindSpeed";
-import { getDayOrNightIcon } from "@/utils/getDayOrNightIcon";
-import { metersToKilometers } from "@/utils/metersToKilometers";
-import { format, parseISO, fromUnixTime } from "date-fns";
-import { useQuery } from "react-query";
-import { loadingCityAtom, placeAtom } from "./atom";
-import { useAtom } from "jotai";
-import SkeletonLoader from "@/components/SkeletonLoader";
-import { useEffect } from "react";
-import { WeatherData } from "@/constants";
-import axios from "axios";
+import Container from "@/components/Container"
+import ForecastWeatherDetail from "@/components/ForecastWeatherDetail"
+import NavBar from "@/components/NavBar"
+import WeatherDetails from "@/components/WeatherDetails"
+import WeatherIcon from "@/components/WeatherIcon"
+import { convertKelvinToCelsius } from "@/utils/convertKelvinToCelsius"
+import { convertWindSpeed } from "@/utils/convertWindSpeed"
+import { getDayOrNightIcon } from "@/utils/getDayOrNightIcon"
+import { metersToKilometers } from "@/utils/metersToKilometers"
+import { format, parseISO, fromUnixTime } from "date-fns"
+import { useQuery } from "react-query"
+import { loadingCityAtom, placeAtom } from "./atom"
+import { useAtom } from "jotai"
+import SkeletonLoader from "@/components/SkeletonLoader"
+import { useEffect } from "react"
+import { WeatherData } from "@/constants"
+import axios from "axios"
 
 export default function Home() {
-  const [place, ] = useAtom(placeAtom);
-  const [loadingCity, ] = useAtom(loadingCityAtom);
+  const [place] = useAtom(placeAtom)
+  const [loadingCity] = useAtom(loadingCityAtom)
 
   // const { isLoading, data } = useQuery(
   //   ["repoData", place],
@@ -36,14 +36,14 @@ export default function Home() {
     async () => {
       const { data } = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}&cnt=56`
-      );
-      return data;
+      )
+      return data
     }
-  );
+  )
 
   useEffect(() => {
-    refetch();
-  }, [place, refetch]);
+    refetch()
+  }, [place, refetch])
 
   // console.log(data);
   // معموله علشان انت المفروض عندك في القائمه حاولي 40 مصفوفه واليوم الواحد ليه اكتر من بيانات لذلك انا عملت دا علشان المصفوفه تكون فيها بيانات خاص بيوم واحد بس
@@ -53,30 +53,30 @@ export default function Home() {
         (entry) => new Date(entry.dt * 1000).toISOString().split("T")[0]
       )
     ),
-  ];
+  ]
 
   // console.log(uniqueDates);
 
   // Filtering data to get the first entry after 6 AM for each unique date
   const firstDateForEachDate = uniqueDates.map((date) => {
     return data?.list.find((entry) => {
-      const entryDate = new Date(entry.dt * 1000).toISOString().split("T")[0];
+      const entryDate = new Date(entry.dt * 1000).toISOString().split("T")[0]
 
-      const entryTime = new Date(entry.dt * 1000).getHours();
+      const entryTime = new Date(entry.dt * 1000).getHours()
 
-      return entryDate === date && entryTime >= 6;
-    });
-  });
+      return entryDate === date && entryTime >= 6
+    })
+  })
 
-  console.log(firstDateForEachDate);
-  const firstDate = data?.list[0];
+  console.log(firstDateForEachDate)
+  const firstDate = data?.list[0]
 
   if (isLoading)
     return (
       <div className="flex items-center min-h-screen justify-center">
         <p className="animate-bounce">Loading...</p>
       </div>
-    );
+    )
 
   return (
     <div className="flex flex-col gap-4 bg-gray-100 min-h-screen">
@@ -230,5 +230,5 @@ export default function Home() {
         )}
       </main>
     </div>
-  );
+  )
 }
