@@ -8,7 +8,6 @@ import WeatherDetails from "@/components/WeatherDetails";
 import WeatherIcon from "@/components/WeatherIcon";
 import { convertKelvinToCelsius } from "@/utils/convertKelvinToCelsius";
 import { convertWindSpeed } from "@/utils/convertWindSpeed";
-import { fetchWeatherData } from "@/utils/fetchWeatherData";
 import { getDayOrNightIcon } from "@/utils/getDayOrNightIcon";
 import { metersToKilometers } from "@/utils/metersToKilometers";
 import { format, parseISO, fromUnixTime } from "date-fns";
@@ -21,8 +20,8 @@ import { WeatherData } from "@/constants";
 import axios from "axios";
 
 export default function Home() {
-  const [place, setPlace] = useAtom(placeAtom);
-  const [loadingCity, _] = useAtom(loadingCityAtom);
+  const [place, ] = useAtom(placeAtom);
+  const [loadingCity, ] = useAtom(loadingCityAtom);
 
   // const { isLoading, data } = useQuery(
   //   ["repoData", place],

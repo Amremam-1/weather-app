@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Head from "next/head";
 
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

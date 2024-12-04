@@ -1,89 +1,89 @@
 /** @format */
-"use client";
+"use client"
 
-import React from "react";
-import { MdOutlineLocationOn, MdWbSunny } from "react-icons/md";
-import { MdMyLocation } from "react-icons/md";
-import SearchBox from "./SearchBox";
-import { useState } from "react";
-import axios from "axios";
-import { loadingCityAtom, placeAtom } from "@/app/atom";
-import { useAtom } from "jotai";
-import { API_BASE_URL } from "@/utils/apiConfig";
+import React from "react"
+import { MdOutlineLocationOn, MdWbSunny } from "react-icons/md"
+import { MdMyLocation } from "react-icons/md"
+import SearchBox from "./SearchBox"
+import { useState } from "react"
+import axios from "axios"
+import { loadingCityAtom, placeAtom } from "@/app/atom"
+import { useAtom } from "jotai"
+import { API_BASE_URL } from "@/utils/apiConfig"
 
-type Props = { location?: string };
+type Props = { location?: string }
 
-const API_KEY = process.env.NEXT_PUBLIC_WEATHER_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_WEATHER_KEY
 
 export default function NavBar({ location }: Props) {
-  const [city, setCity] = useState("");
-  const [error, setError] = useState("");
+  const [city, setCity] = useState("")
+  const [error, setError] = useState("")
   //
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
-  const [place, setPlace] = useAtom(placeAtom);
-  const [_, setLoadingCity] = useAtom(loadingCityAtom);
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [, setPlace] = useAtom(placeAtom)
+  const [, setLoadingCity] = useAtom(loadingCityAtom)
 
   async function handleInputChang(value: string) {
-    setCity(value);
+    setCity(value)
     if (value.length >= 3) {
       try {
         const response = await axios.get(
           `https://api.openweathermap.org/data/2.5/find?q=${value}&appid=${API_KEY}`
-        );
+        )
 
-        const suggestions = response.data.list.map((item: any) => item.name);
-        setSuggestions(suggestions);
-        setError("");
-        setShowSuggestions(true);
+        const suggestions = response.data.list.map((item: any) => item.name)
+        setSuggestions(suggestions)
+        setError("")
+        setShowSuggestions(true)
       } catch (error) {
-        setSuggestions([]);
-        setShowSuggestions(false);
+        setSuggestions([])
+        setShowSuggestions(false)
       }
     } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
+      setSuggestions([])
+      setShowSuggestions(false)
     }
   }
 
   function handleSuggestionClick(value: string) {
-    setCity(value);
-    setShowSuggestions(false);
+    setCity(value)
+    setShowSuggestions(false)
   }
 
   function handleSubmiSearch(e: React.FormEvent<HTMLFormElement>) {
-    setLoadingCity(true);
-    e.preventDefault();
+    setLoadingCity(true)
+    e.preventDefault()
     if (suggestions.length == 0) {
-      setError("Location not found");
-      setLoadingCity(false);
+      setError("Location not found")
+      setLoadingCity(false)
     } else {
-      setError("");
+      setError("")
       setTimeout(() => {
-        setLoadingCity(false);
-        setPlace(city);
-        setShowSuggestions(false);
-      }, 500);
+        setLoadingCity(false)
+        setPlace(city)
+        setShowSuggestions(false)
+      }, 500)
     }
   }
 
   function handleCurrentLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (postiion) => {
-        const { latitude, longitude } = postiion.coords;
+        const { latitude, longitude } = postiion.coords
         try {
-          setLoadingCity(true);
+          setLoadingCity(true)
           const response = await axios.get(
             `${API_BASE_URL}weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
-          );
+          )
           setTimeout(() => {
-            setLoadingCity(false);
-            setPlace(response.data.name);
-          }, 500);
+            setLoadingCity(false)
+            setPlace(response.data.name)
+          }, 500)
         } catch (error) {
-          setLoadingCity(false);
+          setLoadingCity(false)
         }
-      });
+      })
     }
   }
   return (
@@ -143,7 +143,7 @@ export default function NavBar({ location }: Props) {
         </div>
       </section>
     </>
-  );
+  )
 }
 
 function SuggetionBox({
@@ -152,10 +152,10 @@ function SuggetionBox({
   handleSuggestionClick,
   error,
 }: {
-  showSuggestions: boolean;
-  suggestions: string[];
-  handleSuggestionClick: (item: string) => void;
-  error: string;
+  showSuggestions: boolean
+  suggestions: string[]
+  handleSuggestionClick: (item: string) => void
+  error: string
 }) {
   return (
     <>
@@ -176,5 +176,5 @@ function SuggetionBox({
         </ul>
       )}
     </>
-  );
+  )
 }
