@@ -23,14 +23,6 @@ export default function Home() {
   const [place] = useAtom(placeAtom)
   const [loadingCity] = useAtom(loadingCityAtom)
 
-  // const { isLoading, data } = useQuery(
-  //   ["repoData", place],
-  //   () => fetchWeatherData(place),
-  //   {
-  //     enabled: !!place, // Only run query if place is defined
-  //   }
-  // );
-
   const { isLoading, data, refetch } = useQuery<WeatherData>(
     "repoData",
     async () => {
