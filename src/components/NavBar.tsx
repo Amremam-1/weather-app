@@ -7,7 +7,7 @@ import SearchBox from "./SearchBox"
 import { loadingCityAtom, placeAtom } from "@/app/atom"
 import { useAtom } from "jotai"
 import axios from "axios"
-import { API_BASE_URL } from "@/utils/apiConfig"
+// import { API_BASE_URL } from "@/utils/apiConfig"
 
 // Define the Props type
 type Props = { location?: string }
